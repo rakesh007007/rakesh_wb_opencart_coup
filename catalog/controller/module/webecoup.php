@@ -32,10 +32,7 @@ class ControllerModuleWebecoup extends Controller {
             $qty = (int) $pp->row['qty'];
             $option = $pp->row['option'];
                               // start buffer capture
-    var_dump( $pp->row['u_id'] );           // dump the values
-    $contents = ob_get_contents(); // put the buffer into a variable
-    ob_end_clean();                // end capture
-    error_log( $contents ); 
+    
 
             echo "<script type=\"text/javascript\"> p['".$key."'] = {}</script>";
             echo "<script type=\"text/javascript\"> p['".$key."']['u_id'] =  '".$u_id."'</script>";
@@ -222,14 +219,7 @@ class ControllerModuleWebecoup extends Controller {
 
             if (isset($this->request->get['option'])) {
                 $option = $this->request->get['option'];
-                error_log('from controller rak');
-                //$option = parse_url($option);
-               // ob_start();  
-
-                print_r( $option );           // dump the values
-    $contents = ob_get_contents(); // put the buffer into a variable
-    ob_end_clean();                // end capture
-    error_log( $contents );
+                
 
             } else {
                 $option = array();

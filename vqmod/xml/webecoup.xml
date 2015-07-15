@@ -10,7 +10,6 @@
          <add><![CDATA[$var =array();
     $var['option']=$option;
    $pp ="INSERT INTO " . "webengage_track  (`product_id`,`key`,`qty`, `option`,`recurring_id`,`url`) VALUES ( ".$product_id." , '".$key."', ".$qty." , '".http_build_query($var)."',  ".$recurring_id." , '' ) ";
-    error_log($pp);
     $this->db->query($pp);]]></add>
       </operation>
    </file>

@@ -453,8 +453,7 @@ public function indexSetting()
 
     private function handleCallbackPage()
     {
-        error_log('your request is coming to handle pageSSS');
-        //error_log($_REQUEST[]);
+        
         $data['main_url'] = $this->getUrl('page=main');
         $data['wlc'] = urldecode(isset($_REQUEST['webengage_license_code']) ? htmlspecialchars($_REQUEST['webengage_license_code'], ENT_COMPAT, 'UTF-8') : '');
         $data['vm'] = urldecode(isset($_REQUEST['verification_message']) ? htmlspecialchars($_REQUEST['verification_message'], ENT_COMPAT, 'UTF-8') : '');
@@ -570,8 +569,6 @@ public function indexSetting()
         $wlc = isset($_REQUEST['webengage_license_code']) ? htmlspecialchars($_REQUEST['webengage_license_code'], ENT_COMPAT, 'UTF-8') : '';
         $vm = isset($_REQUEST['verification_message']) ? htmlspecialchars($_REQUEST['verification_message'], ENT_COMPAT, 'UTF-8') : '';
         $wws = isset($_REQUEST['webengage_widget_status']) ? htmlspecialchars($_REQUEST['webengage_widget_status'], ENT_COMPAT, 'UTF-8') : 'ACTIVE';
-        error_log('message coming');
-        error_log($wlc);
         if (1==1)
         {
             $webengage_settings = $this->model_setting_setting->getSetting('webengage');
@@ -584,13 +581,7 @@ public function indexSetting()
 
 
             $webengage_settings = $this->model_setting_setting->getSetting('webengage');
-            error_log('hhhhh2');
-error_log('sucker');
- ob_start();                    // start buffer capture
-    var_dump( $data);           // dump the values
-    $contents = ob_get_contents(); // put the buffer into a variable
-    ob_end_clean();                // end capture
-    error_log( $contents ); 
+            
             
             $msg = !empty($vm) ? $vm : 'Your WebEngage widget license code has been updated.';
             return array('message', $msg);
