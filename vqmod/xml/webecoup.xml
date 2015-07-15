@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+   <id>Replace the css property in heading title in Home page</id>
+   <version>1.0</version>
+   <vqmver>2.X</vqmver>
+   <author>Rakesh+</author>
+   <file name="system/library/cart.php">
+      <operation>
+         <search position="after"><![CDATA[$key = base64_encode(serialize($product));]]></search>
+         <add><![CDATA[$var =array();
+    $var['option']=$option;
+   $pp ="INSERT INTO " . "webengage_track  (`product_id`,`key`,`qty`, `option`,`recurring_id`,`url`) VALUES ( ".$product_id." , '".$key."', ".$qty." , '".http_build_query($var)."',  ".$recurring_id." , '' ) ";
+    error_log($pp);
+    $this->db->query($pp);]]></add>
+      </operation>
+   </file>
+   <file name="catalog/view/theme/*/default/template/common/header.tpl">
+      <operation>
+         <search position="bottom"><![CDATA[ <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script> ]]></search>
+         <add><![CDATA[ 
+    <script  src="http://localhost/ui3/jquery.cookie.js" type="text/javascript"></script>
+]]></add>
+      </operation>
+   </file>
+   <file name="catalog/controller/common/header.php">
+      <operation>
+         <search position="after"><![CDATA[ 
+         public function index() {
+         ]]></search>
+         <add><![CDATA[
+         
+         $weLicenseCode = $this->config->get('webengage_license_code');
+          $weStatus = $this->config->get('webengage_status');
+
+          if(isset($weStatus) && strlen($weStatus) > 0 && $weStatus == 'ACTIVE')
+          {
+            $data["webengage_license_code"] = $weLicenseCode;  
+          } else {
+            $data["webengage_license_code"] = '';
+          }
+      
+
+         ]]></add>
+      </operation>
+   </file>
+   <file name="catalog/view/theme/*/default/template/checkout/cart.tpl">
+      <operation>
+         <search position="replace"><![CDATA[cart.remove('<?php echo $product['key']; ?>');]]></search>
+         <add><![CDATA[webRemove('<?php echo $product['key']; ?>');]]></add>
+      </operation>
+   </file>
+   <file name="catalog/view/theme/*/default/template/common/cart.tpl">
+      <operation>
+         <search position="replace"><![CDATA[cart.remove('<?php echo $product['key']; ?>');]]></search>
+         <add><![CDATA[webRemove('<?php echo $product['key']; ?>');]]></add>
+      </operation>
+   </file>
+   <file name="catalog/view/theme/*/default/template/common/header.tpl">
+      <operation info="Replace the css property in heading title in Home page">
+         <search position="top"><![CDATA[<?php foreach ($products as $product) { ?>]]></search>
+         <add><![CDATA[
+         <?php
+         $licenseCode = $data['webengage_license_code'];
+         echo "<script type=\"text/javascript\">window.licenseCode='".$licenseCode."'</script>";
+          ?>
+          <?php if($licenseCode===''){
+            
+          }
+          else{
+
+           ?>
+         <script type="text/javascript">
+function getUrlParameter(sParam,par2)
+{
+    var sPageURL = par2;
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
+        }
+    }
+} 
+</script>
+<script type='text/javascript'>
+function webRemove(key){
+  $.ajax({
+      url: 'index.php?route=checkout/cart/remove',
+      type: 'post',
+      data: 'key=' + key,
+      dataType: 'json',
+      beforeSend: function() {
+        $('#cart > button').button('loading');
+      },
+      complete: function() {
+        $('#cart > button').button('reset');
+      },      
+      success: function(json) {
+        // Need to set timeout otherwise it wont update the total
+        setTimeout(function () {
+          $('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+        }, 100);
+          
+        if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {
+
+          
+        } else {
+          $('#cart > ul').load('index.php?route=common/cart/info ul li');
+        }
+      }
+    });
+  }
+
+</script>
+<script id="_webengage_script_tag" type="text/javascript">
+console.log('request to webengage main coming')
+   window._weq = {} || _weq;
+  _weq['webengage.licenseCode'] = licenseCode;
+  _weq['webengage.widgetVersion'] = "4.0";
+  _weq['webengage.notification.forcedRender'] = true;
+  //_weq['webengage.feedback.defaultRender'] = false;
+  //var elementExists = document.getElementById("_webengage_script_tag");
+   webePrevElem=document.getElementsByTagName('webengagedata')
+   if(webePrevElem.length>0){
+    console.log('just reloaded');
+    webengage.reload();
+   }
+   else{
+    (function(d){
+    var _we = d.createElement('script');
+    _we.type = 'text/javascript';
+    _we.async = true;
+    _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
+    var _sNode = d.getElementById('_webengage_script_tag');
+    _sNode.parentNode.insertBefore(_we, _sNode);
+  })(document);
+
+   }
+
+</script>
+
+<script id="_webengage_script_tag" type="text/javascript">
+  function webe(coup,url,cartDropped,couponName){
+    console.log('request to webengage main coming')
+   window._weq = {} || _weq;
+  _weq['webengage.licenseCode'] = licenseCode;
+  _weq['webengage.widgetVersion'] = "4.0";
+  _weq['webengage.ruleData'] = {'coupon':coup,'cartDropped':cartDropped};
+  _weq['webengage.notification.tokens'] = {'pdurl':url,'couponCode':coup,'couponName':couponName};
+  _weq['webengage.notification.forcedRender'] = true;
+  _weq['webengage.feedback.defaultRender'] = false;
+  //var elementExists = document.getElementById("_webengage_script_tag");
+   webePrevElem=document.getElementsByTagName('webengagedata')
+   if(webePrevElem.length>0){
+    console.log('just reloaded');
+    webengage.reload();
+   }
+   else{
+    (function(d){
+    var _we = d.createElement('script');
+    _we.type = 'text/javascript';
+    _we.async = true;
+    _we.src = (d.location.protocol == 'https:' ? "https://ssl.widgets.webengage.com" : "http://cdn.widgets.webengage.com") + "/js/widget/webengage-min-v-4.0.js";
+    var _sNode = d.getElementById('_webengage_script_tag');
+    _sNode.parentNode.insertBefore(_we, _sNode);
+  })(document);
+
+   }
+
+  }
+  
+</script>
+<script id="_webengage_script_tag" type="text/javascript">
+  function webeReload(coup,url,cartDropped,couponName){
+  console.log('calling webengage reload');
+   window._weq = {} || _weq;
+  _weq['webengage.licenseCode'] = licenseCode;
+  _weq['webengage.widgetVersion'] = "4.0";
+  _weq['webengage.ruleData'] = {'coupon':coup,'cartDropped':cartDropped};
+  _weq['webengage.notification.tokens'] = {'pdurl':url,'couponCode':coup,'couponName':couponName};
+  _weq['webengage.notification.forcedRender'] = true;
+  _weq['webengage.feedback.defaultRender'] = false;
+
+  webengage.reload();
+  }
+  
+</script>
+<script>
+//till here  no console.error(message);
+
+</script>
+<script>
+function coupswap(callback){
+console.log('request to coupswap');
+  if($.cookie("newcoup")==null){
+    $.cookie('prevcoup',null);
+    fixedUrl  = location.origin+location.pathname;
+    newt = $.get(fixedurl+'?route=module/webecoup/indexcoup',function(data){
+    jsondata = JSON.parse(data);
+    newcoup = jsondata;
+    $.cookie('newcoup',JSON.stringify(newcoup));
+    //callback();
+    console.log('coupswap finished');
+    if(callback==null){
+
+    }
+    else {
+      callback();
+    }
+    
+
+  });
+  }
+  else {
+    newcoup = $.cookie("newcoup");
+    $.cookie('prevcoup',newcoup);
+    fixedUrl  = location.origin+location.pathname;
+    newt = $.get(fixedUrl+'?route=module/webecoup/indexcoup',function(data){
+    jsondata = JSON.parse(data);
+    newcoup = jsondata;
+    $.cookie('newcoup',JSON.stringify(newcoup));
+    //callback();
+    console.log('coupswap finished');
+    if(callback==null){
+
+    }
+    else {
+      callback();
+    }
+    
+    
+    
+
+    });
+  }
+
+
+}
+</script>
+<script>
+  window.addEventListener('load', function (){
+  currentUrl = getURLVar('route');
+
+  document.cookie="username=John Smith; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
+  fixedUrl  = location.origin+location.pathname;
+  respb = $.get(fixedUrl+'?route=module/webecoup/qtyfinderrak',function(data){
+           respb1= data;
+           console.log(JSON.parse(respb1));
+           window.qty_web =JSON.parse(respb1);
+      });
+  
+  if($.cookie("newcoup")==null){
+    couponForRequestCookie =  $.cookie('prevcoup');
+    $.cookie('prevcoup',null);
+    fixedUrl  = location.origin+location.pathname;
+    newt = $.get(fixedUrl+'?route=module/webecoup/indexcoup',function(data){
+    jsondata = JSON.parse(data);
+    newcoup = jsondata;
+    console.log('message1');
+    console.log(newcoup);
+    $.cookie('newcoup',JSON.stringify(newcoup));
+    var url = window.location.origin + window.location.pathname + "?route=module/webecoup/applycoup&coupon=" + newcoup['code'];
+    if(currentUrl=='checkout/cart'){
+      if($.cookie('showNotification')=="yes"){
+       //then show the notification logic will come her
+      //coupon = $.cookie('coupon')['code'];
+      couponForRequest = JSON.parse(couponForRequestCookie);
+      url = $.cookie('pdurl');
+      coupon=couponForRequest['code'];
+      couponName =couponForRequest['name']; 
+
+      webe(coupon,url,'yes',couponName);
+       $.cookie('showNotification',null);
+
+       }
+       else{
+         webe(newcoup['code'],url,"no",newcoup['name']);
+      }
+     
+  
+    }
+    else{
+    webe(newcoup['code'],url,"no",newcoup['name']);}
+
+  });
+  }
+  else {
+    newcoup = $.cookie("newcoup");
+    couponForRequestCookie  =$.cookie('prevcoup');
+    $.cookie('prevcoup',newcoup);
+    fixedUrl  = location.origin+location.pathname;
+    newt = $.get(fixedUrl+'?route=module/webecoup/indexcoup',function(data){
+    jsondata = JSON.parse(data);
+    newcoup = jsondata;
+    $.cookie('newcoup',JSON.stringify(newcoup));
+    var url = window.location.origin + window.location.pathname + "?route=module/webecoup/applycoup&coupon=" + newcoup['code'];
+    if(currentUrl=='checkout/cart'){
+      if($.cookie('showNotification')=="yes"){
+       //then show the notification logic will come her
+      //coupon = $.cookie('coupon')['code'];
+      couponForRequest = JSON.parse(couponForRequestCookie);
+      url = $.cookie('pdurl');
+      coupon = couponForRequest['code'];
+      couponName = couponForRequest['name'];
+      webe(coupon,url,'yes',couponName);
+       $.cookie('showNotification',null);
+
+         }
+         else{
+         webe(newcoup['code'], url,"no",newcoup['name']);
+      }
+     
+  
+      }
+      else{
+         webe(newcoup['code'], url,"no",newcoup['name']);
+      }
+   
+    
+
+    });
+  }
+  $(document).ajaxComplete(function(e, xhr, settings) {
+    if (settings.url == 'index.php?route=checkout/cart/add') {
+        coupswap(function(){
+          newcoupCookie=$.cookie('newcoup');
+          newcoup = JSON.parse(newcoupCookie);
+         var url = window.location.origin + window.location.pathname + "?route=module/webecoup/applycoup&coupon=" + newcoup['code'];
+        webeReload(newcoup['code'], url,"no",newcoup['name']);
+
+        }
+        );
+       
+        
+
+        fixedUrl  = location.origin+location.pathname;
+        respb = $.get(fixedUrl+'?route=module/webecoup/qtyfinderrak',function(data){
+           respb1= data;
+           window.qty_web =JSON.parse(respb1);
+      });
+    }
+    else if (settings.url == 'index.php?route=checkout/cart/remove'){
+        coupswap(function(){});
+        window.queryy = settings.data;
+        
+        window.keydeleted = queryy.replace('key=','');
+        //window.keydeleted = getUrlParameter('key',queryy);
+        
+        var url = window.location.origin + window.location.pathname + "?route=module/webecoup/indexrajax&key=" + keydeleted;
+                var data = $.get(url, function(data) {
+                  console.log(' looking for error');
+                  console.log(data);
+                    jsondata = JSON.parse(data);
+                    if ($.cookie('prevcoup')!= null && $.cookie('prevcoup')['code']!= '') {
+                        ttcopCookie = $.cookie('prevcoup');
+                        ttcop = JSON.parse(ttcopCookie);
+                        finalurl = window.location.origin + window.location.pathname + "?route=module/webecoup/indexrak" + "&product_id=" + jsondata['product_id'] + "&ttcop=" + ttcop['code'] + "&qty=" + qty_web[keydeleted] + "&" + jsondata['option'];
+                        if(currentUrl=='checkout/cart' || currentUrl=='checkout/checkout' ){
+                          $.cookie('pdurl',finalurl);
+                          $.cookie('coupon',ttcopCookie);
+                          $.cookie('showNotification','yes');
+                          location = 'index.php?route=checkout/cart';
+                               
+                              
+                            }
+                        else{
+                              webeReload(ttcop['code'],finalurl,"yes",ttcop['name']);
+
+
+                        }
+                    } else {
+                        finalurl = window.location.origin + window.location.pathname + "?route=module/webecoup/indexrak" + "&product_id=" + jsondata['product_id'] + "&qty=" + qty_web[keydeleted] + "&" + jsondata['option'];
+                        
+                          
+                            webeReload('',finalurl,"yes",'');
+                            if(currentUrl=='checkout/cart' || currentUrl=='checkout/checkout' ){
+          
+                          location = 'index.php?route=checkout/cart';
+                               
+                              
+                            }
+
+                          
+                          
+
+                    }
+                    fixedUrl  = location.origin+location.pathname;
+                    respb = $.get(fixedUrl+'?route=module/webecoup/qtyfinderrak',function(data){
+           respb1= data;
+           window.qty_web =JSON.parse(respb1);
+
+      })
+
+                });
+                
+
+    }
+});
+
+
+});
+</script>
+<?php } ?>
+]]></add>
+      </operation>
+   </file>
+</modification>
