@@ -3,13 +3,13 @@
 
     <title>Manage Campaign - Cart Coupons - Webengage - Magento</title>
     
-    <link rel="stylesheet" href="http://localhost/ui3/images/fonts/dbfont/custom-font6.css">
-    <link href="http://localhost/ui3/vendor/bootstrap/css/bootstrap.paper.min.css" rel="stylesheet">
-    <link href="http://localhost/ui3/vendor/select2/select2.css" rel="stylesheet">
-    <link href="http://localhost/ui3/vendor/animate/animate.css" rel="stylesheet">
-    <link href="http://localhost/ui3/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://uifilesplugins.webuda.com/ui3/images/fonts/dbfont/custom-font6.css">
+    <link href="http://uifilesplugins.webuda.com/ui3/vendor/bootstrap/css/bootstrap.paper.min.css" rel="stylesheet">
+    <link href="http://uifilesplugins.webuda.com/ui3/vendor/select2/select2.css" rel="stylesheet">
+    <link href="http://uifilesplugins.webuda.com/ui3/vendor/animate/animate.css" rel="stylesheet">
+    <link href="http://uifilesplugins.webuda.com/ui3/css/main.css" rel="stylesheet">
 
-    <script type="text/javascript" src="http://localhost/ui3/js/components/we-webfont.js"></script>
+    <script type="text/javascript" src="http://uifilesplugins.webuda.com/ui3/js/components/we-webfont.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -251,9 +251,9 @@ else {
 </div>
 
 <?php echo $footer; ?>
-<script type="text/javascript" src="http://localhost/ui3/vendor/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="http://localhost/ui3/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://localhost/ui3/vendor/select2/select2.js"></script>
-<script type="text/javascript" src="http://localhost/ui3/js/components/we-select.js"></script>
-<script type="text/javascript" src="http://localhost/ui3/js/components/we-form.js"></script>
-<script type="text/javascript" src="http://localhost/ui3/js/main.js"></script>
+<script type="text/javascript" src="http://uifilesplugins.webuda.com/ui3/vendor/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="http://uifilesplugins.webuda.com/ui3/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://uifilesplugins.webuda.com/ui3/vendor/select2/select2.js"></script>
+<script type="text/javascript" src="http://uifilesplugins.webuda.com/ui3/js/components/we-select.js"></script>
+<script type="text/javascript" src="http://uifilesplugins.webuda.com/ui3/js/components/we-form.js"></script>
+<script type="text/javascript" src="http://uifilesplugins.webuda.com/ui3/js/main.js"></script>
